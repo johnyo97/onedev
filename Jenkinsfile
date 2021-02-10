@@ -29,6 +29,12 @@ def CommitToRepo(String message) {
 }
 
 node {
+
+	tools { 
+        maven 'Maven 3.6.3' 
+        jdk 'jdk1.8.0_181' 
+    }
+
     // List of variables needed to build
     // Update these as needed prior to building
     def GIT_URL = 'https://github.com/johnyo97/onedev.git'
