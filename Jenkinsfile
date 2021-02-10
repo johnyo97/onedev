@@ -31,7 +31,7 @@ def CommitToRepo(String message) {
 node {
     // List of variables needed to build
     // Update these as needed prior to building
-    def GIT_URL = 'github.com/johnyo97/onedev.git'
+    def GIT_URL = 'https://github.com/johnyo97/onedev.git'
     def BRANCH_NAME = 'main'
 
     // List collecting errors, exceptions thrown
