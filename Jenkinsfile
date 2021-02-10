@@ -28,7 +28,7 @@ def CommitToRepo(String message) {
     bat "git commit -am '${message}'"
 }
 
-node {
+pipeline {
 
 	tools { 
         maven 'Maven 3.6.3' 
@@ -43,31 +43,33 @@ node {
     // List collecting errors, exceptions thrown
     def errorMessages = []
 
-    stage("Clean local directory") {
-        deleteDir()
-    }
-    stage("Clone repo") {
-        try {
-			CheckoutRepo(GIT_URL, BRANCH_NAME)
-        }
-        catch(Exception ex) {
-            errorMessages.add(ex.toString())
-        }
-    }
-    stage("Build") {
-        if(errorMessages.size() != 0) {
-            String errors = errorMessages.join(",")
-            throw new Exception(errors)
-        }
-		// Switch and build using Maven on CLI
-		bat 'dir'
-        bat 'mvn install'
+    stages {
+		stage("Clean local directory") {
+			deleteDir()
+		}
+		stage("Clone repo") {
+			try {
+				CheckoutRepo(GIT_URL, BRANCH_NAME)
+			}
+			catch(Exception ex) {
+				errorMessages.add(ex.toString())
+			}
+		}
+		stage("Build") {
+			if(errorMessages.size() != 0) {
+				String errors = errorMessages.join(",")
+				throw new Exception(errors)
+			}
+			// Switch and build using Maven on CLI
+			bat 'dir'
+			bat 'mvn install'
 
-		// 
-		bat 'cd server-product'
-		bat 'mvn exec:java -Dexec.mainClass="io.onedev.commons.launcher.bootstrap.Bootstrap"'
-    }
-    stage("Reset git head") {
-        PullRepo(BRANCH_NAME)
-    }
+			// 
+			bat 'cd server-product'
+			bat 'mvn exec:java -Dexec.mainClass="io.onedev.commons.launcher.bootstrap.Bootstrap"'
+		}
+		stage("Reset git head") {
+			PullRepo(BRANCH_NAME)
+		}
+	}
 }
