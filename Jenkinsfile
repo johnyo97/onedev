@@ -55,7 +55,7 @@ node {
         }
 		// Switch and build using Maven on CLI
 		bat 'dir'
-		baat 'cd onedev'
+		bat 'cd onedev'
         bat 'mvn install'
 
 		// 
