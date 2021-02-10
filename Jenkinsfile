@@ -54,6 +54,7 @@ node {
             throw new Exception(errors)
         }
 		// Switch and build using Maven on CLI
+		sh 'dir'
 		sh 'cd onedev'
         sh 'mvn install'
 
