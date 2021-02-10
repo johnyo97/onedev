@@ -14,18 +14,18 @@ def CheckoutRepo(String gitUrl, String branchName) {
 
 def PushToRepo(String credentials, String branch) {
     sshagent([credentials]) {
-        sh "git push origin ${branch}"
+        bat "git push origin ${branch}"
     }
 }
 
 def PullRepo(String credentials, String branch) {
     sshagent([credentials]) {
-        sh "git pull --ff-only origin ${branch}"
+        bat "git pull --ff-only origin ${branch}"
     }
 }
 
 def CommitToRepo(String message) {
-    sh "git commit -am '${message}'"
+    bat "git commit -am '${message}'"
 }
 
 node {
@@ -54,13 +54,13 @@ node {
             throw new Exception(errors)
         }
 		// Switch and build using Maven on CLI
-		sh 'dir'
-		sh 'cd onedev'
-        sh 'mvn install'
+		bat 'dir'
+		baat 'cd onedev'
+        bat 'mvn install'
 
 		// 
-		sh 'cd server-product'
-		sh 'mvn exec:java -Dexec.mainClass="io.onedev.commons.launcher.bootstrap.Bootstrap"'
+		bat 'cd server-product'
+		bat 'mvn exec:java -Dexec.mainClass="io.onedev.commons.launcher.bootstrap.Bootstrap"'
     }
     stage("Reset git head") {
         PullRepo(BRANCH_NAME)
