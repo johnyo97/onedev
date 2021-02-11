@@ -56,7 +56,7 @@ node {
 		// Switch and build using Maven on CLI
         bat 'Z:/apache-maven-3.6.3/bin/mvn install'
     }
-	stage("Build - 'mvn exec'") {
+	stage("Deployment") {
 		bat 'cd server-product'
 		bat 'Z:/apache-maven-3.6.3/bin/mvn exec:java -Dexec.mainClass="io.onedev.commons.launcher.bootstrap.Bootstrap"'
 	}
