@@ -8,6 +8,10 @@
 //  Groovy script)
 ///////////////////////////////////////////////////////////////////
 
+def PullRepo(String branch) {
+	bat "git pull --ff-only origin ${branch}"
+}
+
 node {
     // List of variables needed to build
     // Update these as needed prior to building
@@ -19,7 +23,7 @@ node {
 
     stage("Pull repo") {
         try {
-			CheckoutRepo(GIT_URL, BRANCH_NAME)
+			PullRepo(BRANCH_NAME)
         }
         catch(Exception ex) {
             errorMessages.add(ex.toString())
@@ -38,7 +42,4 @@ node {
 			bat 'Z:/apache-maven-3.6.3/bin/mvn exec:java -Dexec.mainClass="io.onedev.commons.launcher.bootstrap.Bootstrap"'
 		}
 	}
-    stage("Reset git head") {
-        PullRepo(BRANCH_NAME)
-    }
 }
