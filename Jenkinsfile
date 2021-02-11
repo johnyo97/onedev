@@ -21,14 +21,6 @@ node {
     // List collecting errors, exceptions thrown
     def errorMessages = []
 
-    stage("Pull repo") {
-        try {
-			PullRepo(BRANCH_NAME)
-        }
-        catch(Exception ex) {
-            errorMessages.add(ex.toString())
-        }
-    }
     stage("Build - 'mvn install'") {
         if(errorMessages.size() != 0) {
             String errors = errorMessages.join(",")
