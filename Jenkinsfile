@@ -22,7 +22,7 @@ node {
     def errorMessages = []
 
 	stage("Checkout repo") {
-		if (!new File(dir).list().any()) {
+		if (!new File("").list().any()) {
 			git([url: https://github.com/johnyo97/onedev.git, branch: BRANCH_NAME])
 		}
 	}
