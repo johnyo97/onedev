@@ -2,20 +2,10 @@
 //  Groovy Jenkins Script
 //
 //  Script to build jenkins job
-//  Script uses sshagent plugin (see SSH Agent Plugin on Jenkins)
-//  to connect to git repo using ssh (for now there doesn't seem to
-//  be a way to use the integrated 'Git Publisher' plugin through a
-//  Groovy script)
 ///////////////////////////////////////////////////////////////////
 
 def CheckoutRepo(String gitUrl, String branchName) {
     git( [url: gitUrl, branch: branchName] )
-}
-
-def PullRepo(String credentials, String branch) {
-    sshagent([credentials]) {
-        bat "git pull --ff-only origin ${branch}"
-    }
 }
 
 node {
@@ -45,8 +35,5 @@ node {
         }
 		// Switch and build using Maven on CLI
         bat 'Z:/apache-maven-3.6.3/bin/mvn install'
-    }
-    stage("Reset git head") {
-        PullRepo(BRANCH_NAME)
     }
 }
