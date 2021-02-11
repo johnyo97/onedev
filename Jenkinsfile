@@ -12,6 +12,12 @@ def CheckoutRepo(String gitUrl, String branchName) {
     git( [url: gitUrl, branch: branchName] )
 }
 
+def PullRepo(String credentials, String branch) {
+    sshagent([credentials]) {
+        bat "git pull --ff-only origin ${branch}"
+    }
+}
+
 node {
     // List of variables needed to build
     // Update these as needed prior to building
@@ -20,13 +26,13 @@ node {
 
     // List collecting errors, exceptions thrown
     def errorMessages = []
-	def WORKSPACE = pwd()
 
-    stage("Clone Repo") {
+    stage("Clean local directory") {
+        deleteDir()
+    }
+    stage("Clone repo") {
         try {
-			if (!new File(WORKSPACE).listFiles().length == 0) {
-				CheckoutRepo(GIT_URL, BRANCH_NAME)
-			}
+			CheckoutRepo(GIT_URL, BRANCH_NAME)
         }
         catch(Exception ex) {
             errorMessages.add(ex.toString())
@@ -40,9 +46,7 @@ node {
 		// Switch and build using Maven on CLI
         bat 'Z:/apache-maven-3.6.3/bin/mvn install'
     }
-	stage("Deployment") {
-		dir {
-			bat 'Z:/apache-maven-3.6.3/bin/mvn exec:java -Dexec.mainClass="io.onedev.commons.launcher.bootstrap.Bootstrap"'
-		}
-	}
+    stage("Reset git head") {
+        PullRepo(BRANCH_NAME)
+    }
 }
