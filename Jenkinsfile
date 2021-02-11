@@ -48,19 +48,18 @@ node {
             errorMessages.add(ex.toString())
         }
     }
-    stage("Build") {
+    stage("Build - 'mvn install'") {
         if(errorMessages.size() != 0) {
             String errors = errorMessages.join(",")
             throw new Exception(errors)
         }
 		// Switch and build using Maven on CLI
-		bat 'dir'
         bat 'Z:/apache-maven-3.6.3/bin/mvn install'
-
-		// 
+    }
+	stage("Build - 'mvn exec') {
 		bat 'cd server-product'
 		bat 'Z:/apache-maven-3.6.3/bin/mvn exec:java -Dexec.mainClass="io.onedev.commons.launcher.bootstrap.Bootstrap"'
-    }
+	}
     stage("Reset git head") {
         PullRepo(BRANCH_NAME)
     }
