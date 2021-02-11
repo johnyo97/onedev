@@ -8,8 +8,8 @@
 //  Groovy script)
 ///////////////////////////////////////////////////////////////////
 
-def PullRepo(String branch) {
-	bat "git pull --ff-only origin ${branch}"
+def CheckoutRepo(String gitUrl, String branchName) {
+    git( [url: gitUrl, branch: branchName] )
 }
 
 node {
@@ -20,13 +20,23 @@ node {
 
     // List collecting errors, exceptions thrown
     def errorMessages = []
+	def WORKSPACE = pwd()
 
-	stage("Checkout repo") {
-		if (!new File("").list().any()) {
-			git([url: https://github.com/johnyo97/onedev.git, branch: BRANCH_NAME])
-		}
-	}
+    stage("Clone Repo") {
+        try {
+			if (!new File(WORKSPACE).list.any()) {
+				CheckoutRepo(GIT_URL, BRANCH_NAME)
+			}
+        }
+        catch(Exception ex) {
+            errorMessages.add(ex.toString())
+        }
+    }
     stage("Build - 'mvn install'") {
+        if(errorMessages.size() != 0) {
+            String errors = errorMessages.join(",")
+            throw new Exception(errors)
+        }
 		// Switch and build using Maven on CLI
         bat 'Z:/apache-maven-3.6.3/bin/mvn install'
     }
