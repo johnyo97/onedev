@@ -8,10 +8,6 @@
 //  Groovy script)
 ///////////////////////////////////////////////////////////////////
 
-def PullRepo(String branch) {
-	bat "git pull --ff-only origin ${branch}"
-}
-
 node {
     // List of variables needed to build
     // Update these as needed prior to building
@@ -21,12 +17,9 @@ node {
     // List collecting errors, exceptions thrown
     def errorMessages = []
 
-    stage("Clean local directory") {
-        deleteDir()
-    }
-    stage("Clone repo") {
+    stage("Pull repo") {
         try {
-			PullRepo(BRANCH_NAME)
+			CheckoutRepo(GIT_URL, BRANCH_NAME)
         }
         catch(Exception ex) {
             errorMessages.add(ex.toString())
@@ -41,7 +34,7 @@ node {
         bat 'Z:/apache-maven-3.6.3/bin/mvn install'
     }
 	stage("Deployment") {
-		dir('server-product') {
+		dir {
 			bat 'Z:/apache-maven-3.6.3/bin/mvn exec:java -Dexec.mainClass="io.onedev.commons.launcher.bootstrap.Bootstrap"'
 		}
 	}
