@@ -55,11 +55,11 @@ node {
         }
 		// Switch and build using Maven on CLI
 		bat 'dir'
-        bat 'Z:\apache-maven-3.6.3\bin\mvn install'
+        bat 'Z:/apache-maven-3.6.3/bin/mvn install'
 
 		// 
 		bat 'cd server-product'
-		bat 'Z:\apache-maven-3.6.3\bin\mvn exec:java -Dexec.mainClass="io.onedev.commons.launcher.bootstrap.Bootstrap"'
+		bat 'Z:/apache-maven-3.6.3/bin/mvn exec:java -Dexec.mainClass="io.onedev.commons.launcher.bootstrap.Bootstrap"'
     }
     stage("Reset git head") {
         PullRepo(BRANCH_NAME)
