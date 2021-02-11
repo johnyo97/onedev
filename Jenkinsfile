@@ -24,7 +24,7 @@ node {
 
     stage("Clone Repo") {
         try {
-			if (!new File(WORKSPACE).list.any()) {
+			if (!new File(WORKSPACE).listFiles().length == 0) {
 				CheckoutRepo(GIT_URL, BRANCH_NAME)
 			}
         }
