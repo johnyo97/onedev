@@ -57,7 +57,7 @@ node {
         bat 'Z:/apache-maven-3.6.3/bin/mvn install'
     }
 	stage("Deployment") {
-		bat 'cd server-product'
+		bat 'cd server-product/'
 		bat 'Z:/apache-maven-3.6.3/bin/mvn exec:java -Dexec.mainClass="io.onedev.commons.launcher.bootstrap.Bootstrap"'
 	}
     stage("Reset git head") {
