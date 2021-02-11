@@ -8,24 +8,8 @@
 //  Groovy script)
 ///////////////////////////////////////////////////////////////////
 
-def CheckoutRepo(String gitUrl, String branchName) {
-    git( [url: gitUrl, branch: branchName] )
-}
-
-def PushToRepo(String credentials, String branch) {
-    sshagent([credentials]) {
-        bat "git push origin ${branch}"
-    }
-}
-
-def PullRepo(String credentials, String branch) {
-    sshagent([credentials]) {
-        bat "git pull --ff-only origin ${branch}"
-    }
-}
-
-def CommitToRepo(String message) {
-    bat "git commit -am '${message}'"
+def PullRepo(String branch) {
+	bat "git pull --ff-only origin ${branch}"
 }
 
 node {
@@ -42,7 +26,7 @@ node {
     }
     stage("Clone repo") {
         try {
-			CheckoutRepo(GIT_URL, BRANCH_NAME)
+			PullRepo(BRANCH_NAME)
         }
         catch(Exception ex) {
             errorMessages.add(ex.toString())
