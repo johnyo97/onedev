@@ -21,11 +21,12 @@ node {
     // List collecting errors, exceptions thrown
     def errorMessages = []
 
+	stage("Checkout repo") {
+		if (!new File(dir).list().any()) {
+			git([url: https://github.com/johnyo97/onedev.git, branch: BRANCH_NAME])
+		}
+	}
     stage("Build - 'mvn install'") {
-        if(errorMessages.size() != 0) {
-            String errors = errorMessages.join(",")
-            throw new Exception(errors)
-        }
 		// Switch and build using Maven on CLI
         bat 'Z:/apache-maven-3.6.3/bin/mvn install'
     }
