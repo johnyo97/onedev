@@ -17,17 +17,6 @@ node {
     // List collecting errors, exceptions thrown
     def errorMessages = []
 
-    stage("Clean local directory") {
-        deleteDir()
-    }
-    stage("Clone repo") {
-        try {
-			CheckoutRepo(GIT_URL, BRANCH_NAME)
-        }
-        catch(Exception ex) {
-            errorMessages.add(ex.toString())
-        }
-    }
     stage("Build - 'mvn install'") {
         if(errorMessages.size() != 0) {
 			// We don't want to build if something wrong happened before this stage
