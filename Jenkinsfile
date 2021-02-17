@@ -41,4 +41,16 @@ node {
 			errorMessages.add(ex.toString);
 		}
 	}
+	stage("Regression Test") {
+		// We do not implement this test
+	}
+	stage("Integration Test") {
+		// We do not implement this test
+	}
+	stage("Ping Test") {
+		// We do not implement this test
+	}
+	stage("Linting") {
+		// We do not implement this test
+	}
 }
