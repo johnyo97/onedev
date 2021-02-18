@@ -47,9 +47,6 @@ node {
 	stage("Integration Test") {
 		// We do not implement this test
 	}
-	stage("Ping Test") {
-		// We do not implement this test
-	}
 	stage("Linting") {
 		// We do not implement this test
 	}
